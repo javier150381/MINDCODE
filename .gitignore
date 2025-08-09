@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+ENV/
+.env
+.DS_Store
+/data/
+!data/.gitkeep
+/alembic/versions/*.py
+*.sqlite3
+

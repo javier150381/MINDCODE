@@ -1,0 +1,44 @@
+services:
+  - type: web
+    name: mindchat-api
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app.main:app -w 1 -k uvicorn.workers.UvicornWorker
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase: mindchat-db
+        property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: mindchat-redis
+          type: redis
+          property: connectionString
+    healthCheckPath: /health
+    autoDeploy: true
+    postDeployCommand: alembic upgrade head
+  - type: worker
+    name: mindchat-worker
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app/workers/run.py
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase: mindchat-db
+        property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: mindchat-redis
+          type: redis
+          property: connectionString
+  - type: redis
+    name: mindchat-redis
+    plan: free
+    region: oregon
+  - type: postgres
+    name: mindchat-db
+    plan: free
+    region: oregon
