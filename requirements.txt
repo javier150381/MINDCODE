@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+gunicorn
+pydantic
+sqlalchemy
+psycopg2-binary
+redis
+rq
+python-multipart
+httpx
+faiss-cpu
+alembic
